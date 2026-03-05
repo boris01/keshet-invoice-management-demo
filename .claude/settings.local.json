@@ -45,7 +45,8 @@
       "Bash(node -e \"console.log\\(JSON.stringify\\(require\\(''@nx/jest/preset''\\).default, null, 2\\)\\)\")",
       "Bash(npx nx test server)",
       "Bash(npx nx test server --watch=false)",
-      "Bash(git commit -m \"Phase 6: Backend tests \\(30 pass\\) + Frontend tests \\(28 pass\\)\")"
+      "Bash(git commit -m \"Phase 6: Backend tests \\(30 pass\\) + Frontend tests \\(28 pass\\)\")",
+      "Bash(git commit -m \"Phase 7: Docker multi-stage builds, nginx config, docker-compose with Redis\")"
     ]
   }
 }

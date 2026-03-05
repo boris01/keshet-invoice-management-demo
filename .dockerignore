@@ -1,0 +1,9 @@
+node_modules
+dist
+storage
+.git
+.nx
+.angular
+*.md
+!README.md
+docs/ui-reference-*.png
