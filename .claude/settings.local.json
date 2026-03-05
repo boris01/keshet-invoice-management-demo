@@ -22,7 +22,10 @@
       "Bash(npx nx build shared)",
       "Bash(ls /Users/boriss/Development/Claude/Keshet/node_modules/helmet/*.d.*)",
       "Bash(npx nx build client --skip-nx-cache)",
-      "Bash(git commit -m \"Phase 0-2: Nx workspace, shared types, backend core, frontend shell\")"
+      "Bash(git commit -m \"Phase 0-2: Nx workspace, shared types, backend core, frontend shell\")",
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs kill -9)",
+      "Bash(git commit -m \"Phase 3: Invoice + FileStorage modules, frontend data services, seeder \\(500 invoices\\)\")"
     ]
   }
 }
