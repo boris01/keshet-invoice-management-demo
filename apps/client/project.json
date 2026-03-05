@@ -73,7 +73,9 @@
     },
     "test": {
       "executor": "@angular/build:unit-test",
-      "options": {}
+      "options": {
+        "setupFiles": ["apps/client/src/test-setup.ts"]
+      }
     },
     "serve-static": {
       "continuous": true,
