@@ -29,7 +29,10 @@
       "Bash(git commit -m \"Phase 4: Invoice list screen + invoice detail screen with all sub-components\")",
       "Bash(git commit -m \"Phase 5: Backend caching \\(Redis/memory\\), frontend UX polish \\(responsive, empty state\\)\")",
       "Bash(rm -f .git/index.lock)",
-      "Bash(git commit -m \"Phase 5: Backend caching, frontend responsive polish\")"
+      "Bash(git commit -m \"Phase 5: Backend caching, frontend responsive polish\")",
+      "Bash(git rm -r --cached storage/ dist/)",
+      "Bash(git commit -m \"Add storage/ and dist/ to gitignore, remove tracked generated files\")",
+      "Bash(git commit -m \"Gitignore storage/dist, remove tracked generated files\")"
     ]
   }
 }

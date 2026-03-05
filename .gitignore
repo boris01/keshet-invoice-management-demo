@@ -7,3 +7,9 @@ node_modules
 .angular
 
 __screenshots__/
+
+# Generated files
+storage/
+dist/
+tmp/
+.DS_Store
