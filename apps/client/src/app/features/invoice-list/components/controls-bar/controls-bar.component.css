@@ -132,7 +132,15 @@
   }
 
   .status-boxes {
-    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .status-boxes::-webkit-scrollbar {
+    display: none;
   }
 
   .search-input {
@@ -140,6 +148,15 @@
   }
 
   .date-range-wrapper {
-    display: none;
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    z-index: 50;
+    background: var(--color-surface);
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.12);
+    justify-content: center;
+    box-sizing: border-box;
   }
 }

@@ -74,7 +74,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
                 isGlobal: true,
                 useFactory: async () => {
                     if (process.env.REDIS_URL) {
-                        const KeyvRedis = (await Promise.resolve().then(() => tslib_1.__importStar(__webpack_require__(39)))).default;
+                        const KeyvRedis = (await Promise.resolve().then(() => tslib_1.__importStar(__webpack_require__(40)))).default;
                         return {
                             stores: [new KeyvRedis(process.env.REDIS_URL)],
                         };
@@ -188,9 +188,9 @@ const typeorm_1 = __webpack_require__(7);
 const invoice_entity_1 = __webpack_require__(14);
 const invoice_controller_1 = __webpack_require__(20);
 const invoice_service_1 = __webpack_require__(22);
-const invoice_repository_1 = __webpack_require__(23);
-const invoice_seeder_1 = __webpack_require__(28);
-const file_storage_module_1 = __webpack_require__(33);
+const invoice_repository_1 = __webpack_require__(24);
+const invoice_seeder_1 = __webpack_require__(29);
+const file_storage_module_1 = __webpack_require__(34);
 let InvoiceModule = class InvoiceModule {
 };
 exports.InvoiceModule = InvoiceModule;
@@ -362,9 +362,9 @@ const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const class_transformer_1 = __webpack_require__(21);
 const invoice_service_1 = __webpack_require__(22);
-const pagination_query_dto_1 = __webpack_require__(24);
-const invoice_response_dto_1 = __webpack_require__(26);
-const paginated_invoice_response_dto_1 = __webpack_require__(27);
+const pagination_query_dto_1 = __webpack_require__(25);
+const invoice_response_dto_1 = __webpack_require__(27);
+const paginated_invoice_response_dto_1 = __webpack_require__(28);
 let InvoiceController = class InvoiceController {
     constructor(invoiceService) {
         this.invoiceService = invoiceService;
@@ -426,27 +426,46 @@ module.exports = require("class-transformer");
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.InvoiceService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const invoice_repository_1 = __webpack_require__(23);
+const cache_manager_1 = __webpack_require__(9);
+const cache_manager_2 = __webpack_require__(23);
+const invoice_repository_1 = __webpack_require__(24);
+const INVOICE_LIST_TTL = 60_000; // 60s in ms
+const STATUS_COUNTS_TTL = 60_000; // 60s in ms
 let InvoiceService = class InvoiceService {
-    constructor(invoiceRepository) {
+    constructor(invoiceRepository, cache) {
         this.invoiceRepository = invoiceRepository;
+        this.cache = cache;
     }
     async findPaginated(query) {
+        const cacheKey = `invoices:page:${query.page}:size:${query.pageSize}:status:${query.status ?? ''}:search:${query.search ?? ''}`;
+        const cached = await this.cache.get(cacheKey);
+        if (cached) {
+            return cached;
+        }
         const { items, total } = await this.invoiceRepository.findPaginated(query);
-        return {
+        const result = {
             items,
             total,
             page: query.page,
             pageSize: query.pageSize,
         };
+        await this.cache.set(cacheKey, result, INVOICE_LIST_TTL);
+        return result;
     }
     async getStatusCounts() {
-        return this.invoiceRepository.getStatusCounts();
+        const cacheKey = 'invoice-status-counts';
+        const cached = await this.cache.get(cacheKey);
+        if (cached) {
+            return cached;
+        }
+        const counts = await this.invoiceRepository.getStatusCounts();
+        await this.cache.set(cacheKey, counts, STATUS_COUNTS_TTL);
+        return counts;
     }
     async getById(id) {
         const invoice = await this.invoiceRepository.findById(id);
@@ -459,12 +478,19 @@ let InvoiceService = class InvoiceService {
 exports.InvoiceService = InvoiceService;
 exports.InvoiceService = InvoiceService = tslib_1.__decorate([
     (0, common_1.Injectable)(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof invoice_repository_1.InvoiceRepository !== "undefined" && invoice_repository_1.InvoiceRepository) === "function" ? _a : Object])
+    tslib_1.__param(1, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof invoice_repository_1.InvoiceRepository !== "undefined" && invoice_repository_1.InvoiceRepository) === "function" ? _a : Object, typeof (_b = typeof cache_manager_2.Cache !== "undefined" && cache_manager_2.Cache) === "function" ? _b : Object])
 ], InvoiceService);
 
 
 /***/ }),
 /* 23 */
+/***/ ((module) => {
+
+module.exports = require("cache-manager");
+
+/***/ }),
+/* 24 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -537,7 +563,7 @@ exports.InvoiceRepository = InvoiceRepository = tslib_1.__decorate([
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -545,7 +571,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PaginationQueryDto = void 0;
 const tslib_1 = __webpack_require__(1);
-const class_validator_1 = __webpack_require__(25);
+const class_validator_1 = __webpack_require__(26);
 const class_transformer_1 = __webpack_require__(21);
 const shared_1 = __webpack_require__(16);
 class PaginationQueryDto {
@@ -592,13 +618,13 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ ((module) => {
 
 module.exports = require("class-validator");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -658,7 +684,7 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -666,7 +692,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PaginatedInvoiceResponseDto = void 0;
 const tslib_1 = __webpack_require__(1);
 const class_transformer_1 = __webpack_require__(21);
-const invoice_response_dto_1 = __webpack_require__(26);
+const invoice_response_dto_1 = __webpack_require__(27);
 class PaginatedInvoiceResponseDto {
 }
 exports.PaginatedInvoiceResponseDto = PaginatedInvoiceResponseDto;
@@ -690,7 +716,7 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -703,9 +729,9 @@ const common_1 = __webpack_require__(2);
 const typeorm_1 = __webpack_require__(7);
 const typeorm_2 = __webpack_require__(15);
 const invoice_entity_1 = __webpack_require__(14);
-const file_storage_service_1 = __webpack_require__(29);
-const invoice_pdf_service_1 = __webpack_require__(30);
-const storage_provider_interface_1 = __webpack_require__(32);
+const file_storage_service_1 = __webpack_require__(30);
+const invoice_pdf_service_1 = __webpack_require__(31);
+const storage_provider_interface_1 = __webpack_require__(33);
 const shared_1 = __webpack_require__(16);
 const SUPPLIERS = [
     'Globex',
@@ -814,7 +840,7 @@ function randomDate() {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -851,7 +877,7 @@ exports.FileStorageService = FileStorageService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -860,7 +886,7 @@ exports.InvoicePdfService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const shared_1 = __webpack_require__(16);
-const PDFDocument = __webpack_require__(31);
+const PDFDocument = __webpack_require__(32);
 let InvoicePdfService = class InvoicePdfService {
     generate(invoice) {
         return new Promise((resolve, reject) => {
@@ -1096,13 +1122,13 @@ function formatCurrency(amount) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ ((module) => {
 
 module.exports = require("pdfkit");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -1112,7 +1138,7 @@ exports.STORAGE_PROVIDER = Symbol('STORAGE_PROVIDER');
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1123,11 +1149,11 @@ const common_1 = __webpack_require__(2);
 const typeorm_1 = __webpack_require__(7);
 const file_storage_entity_1 = __webpack_require__(19);
 const invoice_entity_1 = __webpack_require__(14);
-const file_storage_service_1 = __webpack_require__(29);
-const invoice_pdf_service_1 = __webpack_require__(30);
-const local_disk_provider_1 = __webpack_require__(34);
-const storage_provider_interface_1 = __webpack_require__(32);
-const file_controller_1 = __webpack_require__(37);
+const file_storage_service_1 = __webpack_require__(30);
+const invoice_pdf_service_1 = __webpack_require__(31);
+const local_disk_provider_1 = __webpack_require__(35);
+const storage_provider_interface_1 = __webpack_require__(33);
+const file_controller_1 = __webpack_require__(38);
 let FileStorageModule = class FileStorageModule {
 };
 exports.FileStorageModule = FileStorageModule;
@@ -1146,7 +1172,7 @@ exports.FileStorageModule = FileStorageModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1154,8 +1180,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocalDiskProvider = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const fs = tslib_1.__importStar(__webpack_require__(35));
-const path = tslib_1.__importStar(__webpack_require__(36));
+const fs = tslib_1.__importStar(__webpack_require__(36));
+const path = tslib_1.__importStar(__webpack_require__(37));
 let LocalDiskProvider = class LocalDiskProvider {
     constructor() {
         this.storageDir = path.join(process.cwd(), 'storage');
@@ -1192,43 +1218,60 @@ exports.LocalDiskProvider = LocalDiskProvider = tslib_1.__decorate([
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ ((module) => {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ ((module) => {
 
 module.exports = require("path");
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FileController = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const express_1 = __webpack_require__(38);
+const cache_manager_1 = __webpack_require__(9);
+const cache_manager_2 = __webpack_require__(23);
+const express_1 = __webpack_require__(39);
 const typeorm_1 = __webpack_require__(7);
 const typeorm_2 = __webpack_require__(15);
-const file_storage_service_1 = __webpack_require__(29);
-const invoice_pdf_service_1 = __webpack_require__(30);
-const storage_provider_interface_1 = __webpack_require__(32);
+const file_storage_service_1 = __webpack_require__(30);
+const invoice_pdf_service_1 = __webpack_require__(31);
+const storage_provider_interface_1 = __webpack_require__(33);
 const invoice_entity_1 = __webpack_require__(14);
+const PDF_CACHE_TTL = 300_000; // 300s in ms
 let FileController = class FileController {
-    constructor(fileStorageService, invoicePdfService, storageProvider, invoiceRepo) {
+    constructor(fileStorageService, invoicePdfService, storageProvider, invoiceRepo, cache) {
         this.fileStorageService = fileStorageService;
         this.invoicePdfService = invoicePdfService;
         this.storageProvider = storageProvider;
         this.invoiceRepo = invoiceRepo;
+        this.cache = cache;
     }
     async getFile(id, res) {
         const fileRecord = await this.fileStorageService.findById(id);
+        const cacheKey = `pdf:${id}`;
+        // Check cache for PDF buffer
+        const cachedData = await this.cache.get(cacheKey);
+        if (cachedData) {
+            const buffer = Buffer.from(cachedData.buffer, 'base64');
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `inline; filename="${cachedData.filename}"`,
+                'Content-Length': buffer.length,
+            });
+            res.end(buffer);
+            return;
+        }
         let buffer = await this.storageProvider.getFile(fileRecord.fileLocation);
         if (!buffer) {
             // Fallback: regenerate PDF from invoice data
@@ -1241,6 +1284,8 @@ let FileController = class FileController {
             buffer = await this.invoicePdfService.generate(invoice);
             await this.storageProvider.saveFile(fileRecord.fileLocation, buffer);
         }
+        // Cache as base64 string (Buffer doesn't serialize well to JSON stores)
+        await this.cache.set(cacheKey, { buffer: buffer.toString('base64'), filename: fileRecord.filename }, PDF_CACHE_TTL);
         res.set({
             'Content-Type': 'application/pdf',
             'Content-Disposition': `inline; filename="${fileRecord.filename}"`,
@@ -1255,31 +1300,32 @@ tslib_1.__decorate([
     tslib_1.__param(0, (0, common_1.Param)('id')),
     tslib_1.__param(1, (0, common_1.Res)()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [String, typeof (_e = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _e : Object]),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_f = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _f : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], FileController.prototype, "getFile", null);
 exports.FileController = FileController = tslib_1.__decorate([
     (0, common_1.Controller)('files'),
     tslib_1.__param(2, (0, common_1.Inject)(storage_provider_interface_1.STORAGE_PROVIDER)),
     tslib_1.__param(3, (0, typeorm_1.InjectRepository)(invoice_entity_1.InvoiceEntity)),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof file_storage_service_1.FileStorageService !== "undefined" && file_storage_service_1.FileStorageService) === "function" ? _a : Object, typeof (_b = typeof invoice_pdf_service_1.InvoicePdfService !== "undefined" && invoice_pdf_service_1.InvoicePdfService) === "function" ? _b : Object, typeof (_c = typeof storage_provider_interface_1.IStorageProvider !== "undefined" && storage_provider_interface_1.IStorageProvider) === "function" ? _c : Object, typeof (_d = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _d : Object])
+    tslib_1.__param(4, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof file_storage_service_1.FileStorageService !== "undefined" && file_storage_service_1.FileStorageService) === "function" ? _a : Object, typeof (_b = typeof invoice_pdf_service_1.InvoicePdfService !== "undefined" && invoice_pdf_service_1.InvoicePdfService) === "function" ? _b : Object, typeof (_c = typeof storage_provider_interface_1.IStorageProvider !== "undefined" && storage_provider_interface_1.IStorageProvider) === "function" ? _c : Object, typeof (_d = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _d : Object, typeof (_e = typeof cache_manager_2.Cache !== "undefined" && cache_manager_2.Cache) === "function" ? _e : Object])
 ], FileController);
 
-
-/***/ }),
-/* 38 */
-/***/ ((module) => {
-
-module.exports = require("express");
 
 /***/ }),
 /* 39 */
 /***/ ((module) => {
 
-module.exports = require("@keyv/redis");
+module.exports = require("express");
 
 /***/ }),
 /* 40 */
+/***/ ((module) => {
+
+module.exports = require("@keyv/redis");
+
+/***/ }),
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1352,7 +1398,7 @@ const core_1 = __webpack_require__(3);
 const nestjs_pino_1 = __webpack_require__(4);
 const helmet_1 = tslib_1.__importDefault(__webpack_require__(5));
 const app_module_1 = __webpack_require__(6);
-const http_exception_filter_1 = __webpack_require__(40);
+const http_exception_filter_1 = __webpack_require__(41);
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, { bufferLogs: true });
     app.useLogger(app.get(nestjs_pino_1.Logger));

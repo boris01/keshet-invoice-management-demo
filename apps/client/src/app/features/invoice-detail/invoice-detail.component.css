@@ -132,11 +132,18 @@
 @media (max-width: 768px) {
   .detail-content {
     flex-direction: column;
+    padding: var(--space-md);
   }
 
-  .pdf-panel,
+  .pdf-panel {
+    flex: none;
+    width: 100%;
+    min-height: 50vh;
+  }
+
   .cards-panel {
-    flex: auto;
+    flex: none;
+    width: 100%;
   }
 
   .nav-title {

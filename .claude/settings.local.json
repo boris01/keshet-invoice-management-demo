@@ -26,7 +26,10 @@
       "Bash(lsof -ti:3000)",
       "Bash(xargs kill -9)",
       "Bash(git commit -m \"Phase 3: Invoice + FileStorage modules, frontend data services, seeder \\(500 invoices\\)\")",
-      "Bash(git commit -m \"Phase 4: Invoice list screen + invoice detail screen with all sub-components\")"
+      "Bash(git commit -m \"Phase 4: Invoice list screen + invoice detail screen with all sub-components\")",
+      "Bash(git commit -m \"Phase 5: Backend caching \\(Redis/memory\\), frontend UX polish \\(responsive, empty state\\)\")",
+      "Bash(rm -f .git/index.lock)",
+      "Bash(git commit -m \"Phase 5: Backend caching, frontend responsive polish\")"
     ]
   }
 }

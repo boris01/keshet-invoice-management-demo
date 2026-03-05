@@ -29,7 +29,11 @@ import { FileService } from '../../core/services/file.service';
     <app-controls-bar />
     <div class="content-area">
       <div class="table-container" [class.with-panel]="selectedInvoice()">
+        @if (!invoiceService.loading() && invoiceService.invoices().length === 0) {
+          <div class="empty-state">לא נמצאו חשבוניות</div>
+        }
         <app-invoice-table
+          [class.hidden]="invoiceService.loading() || invoiceService.invoices().length === 0"
           [invoices]="invoiceService.invoices()"
           [selectedInvoice]="selectedInvoice()"
           (select)="onSelectInvoice($event)"
@@ -67,6 +71,31 @@ import { FileService } from '../../core/services/file.service';
 
     .table-container.with-panel {
       flex: 0.6;
+    }
+
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40vh;
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+    }
+
+    @media (max-width: 1024px) {
+      .table-container.with-panel {
+        flex: 0.5;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content-area {
+        flex-direction: column-reverse;
+      }
+
+      .table-container.with-panel {
+        flex: 1;
+      }
     }
   `,
 })

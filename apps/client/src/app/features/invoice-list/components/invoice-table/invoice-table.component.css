@@ -148,3 +148,9 @@ td {
     display: none;
   }
 }
+
+@media (max-width: 480px) {
+  .status-icon {
+    display: none;
+  }
+}
