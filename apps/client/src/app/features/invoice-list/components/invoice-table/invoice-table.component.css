@@ -1,0 +1,150 @@
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+thead tr {
+  background: var(--color-table-header-bg);
+}
+
+th {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: start;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.col-desc {
+  width: 50%;
+}
+
+.col-supplier {
+  width: 25%;
+}
+
+.col-cost {
+  width: 25%;
+}
+
+.invoice-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.invoice-row:hover {
+  background: #f0f4f8;
+}
+
+.invoice-row.alt {
+  background: var(--color-row-alt);
+}
+
+.invoice-row.alt:hover {
+  background: #f0f4f8;
+}
+
+.invoice-row.selected,
+.invoice-row.selected:hover,
+.invoice-row.selected.alt {
+  background: var(--color-selected-row);
+}
+
+td {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.desc-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-icon.approved {
+  background: var(--color-approved);
+}
+
+.status-icon.rejected {
+  background: var(--color-rejected);
+}
+
+.status-icon.in-process {
+  background: var(--color-in-process);
+}
+
+.status-icon.pending {
+  background: transparent;
+  border: 2px solid var(--color-text-secondary);
+}
+
+.desc-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.desc-title {
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desc-date {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.sentinel {
+  height: 1px;
+}
+
+@media (max-width: 768px) {
+  th,
+  td {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.8125rem;
+  }
+
+  .col-supplier {
+    display: none;
+  }
+
+  .col-desc {
+    width: 65%;
+  }
+
+  .col-cost {
+    width: 35%;
+  }
+
+  th.col-supplier,
+  td.col-supplier {
+    display: none;
+  }
+}

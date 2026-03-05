@@ -1,24 +1,99 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { IInvoice } from '@keshet/shared';
 import { HeaderComponent } from '../../shared/components/header/header.component';
+import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
+import { ControlsBarComponent } from './components/controls-bar/controls-bar.component';
+import { InvoiceTableComponent } from './components/invoice-table/invoice-table.component';
+import { PdfSidePanelComponent } from './components/pdf-side-panel/pdf-side-panel.component';
+import { InvoiceService } from '../../core/services/invoice.service';
+import { FileService } from '../../core/services/file.service';
 
 @Component({
   selector: 'app-invoice-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HeaderComponent],
+  imports: [
+    HeaderComponent,
+    ControlsBarComponent,
+    InvoiceTableComponent,
+    PdfSidePanelComponent,
+    LoadingSkeletonComponent,
+  ],
   template: `
     <app-header />
-    <main class="placeholder">
-      <p>Invoice List — coming soon</p>
-    </main>
+    <app-controls-bar />
+    <div class="content-area">
+      <div class="table-container" [class.with-panel]="selectedInvoice()">
+        <app-invoice-table
+          [invoices]="invoiceService.invoices()"
+          [selectedInvoice]="selectedInvoice()"
+          (select)="onSelectInvoice($event)"
+          (navigateToDetail)="onNavigateToDetail($event)"
+          (loadMore)="invoiceService.loadMore()"
+        />
+        <app-loading-skeleton [class.hidden]="!invoiceService.loading()" />
+      </div>
+      <app-pdf-side-panel
+        [class.hidden]="!selectedInvoice()"
+        [fileUrl]="selectedFileUrl()"
+        (close)="selectedInvoice.set(null)"
+      />
+    </div>
   `,
   styles: `
-    .placeholder {
+    :host {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50vh;
-      color: var(--color-text-secondary);
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .content-area {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .table-container {
+      flex: 1;
+      overflow-y: auto;
+      min-width: 0;
+      transition: flex 0.2s ease;
+    }
+
+    .table-container.with-panel {
+      flex: 0.6;
     }
   `,
 })
-export class InvoiceListComponent {}
+export class InvoiceListComponent {
+  protected readonly invoiceService = inject(InvoiceService);
+  private readonly fileService = inject(FileService);
+  private readonly router = inject(Router);
+
+  readonly selectedInvoice = signal<IInvoice | null>(null);
+  readonly selectedFileUrl = signal('');
+
+  constructor() {
+    this.invoiceService.fetchInvoices();
+    this.invoiceService.fetchStatusCounts();
+  }
+
+  onSelectInvoice(invoice: IInvoice): void {
+    if (this.selectedInvoice()?.id === invoice.id) {
+      this.selectedInvoice.set(null);
+      this.selectedFileUrl.set('');
+      return;
+    }
+    this.selectedInvoice.set(invoice);
+    this.selectedFileUrl.set(this.fileService.getFileUrl(invoice.fileStorageId));
+  }
+
+  onNavigateToDetail(invoice: IInvoice): void {
+    this.router.navigate(['/invoice', invoice.id]);
+  }
+}

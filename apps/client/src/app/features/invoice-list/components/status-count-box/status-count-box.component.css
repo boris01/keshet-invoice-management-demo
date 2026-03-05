@@ -1,0 +1,40 @@
+:host {
+  display: inline-block;
+}
+
+.count-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 5rem;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.count-box:hover {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.count-box.active {
+  border-bottom: 3px solid var(--color-pending);
+}
+
+.count {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-block-start: 2px;
+  white-space: nowrap;
+}

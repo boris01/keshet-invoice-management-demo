@@ -1,0 +1,57 @@
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: var(--space-lg);
+}
+
+.card-title {
+  margin: 0 0 var(--space-md);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.amount-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.amount-table td {
+  padding: var(--space-sm) 0;
+  font-size: 0.875rem;
+}
+
+.amount-table tr {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.amount-table tr:last-child {
+  border-block-end: none;
+}
+
+.label {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.amount {
+  text-align: end;
+  color: var(--color-text);
+}
+
+.subtotal-row td {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.total-row {
+  background: rgba(66, 133, 244, 0.08);
+}
+
+.total-row td {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+  padding: var(--space-md) var(--space-xs);
+}
