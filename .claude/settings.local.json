@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/boriss/Development/Claude/Keshet/*.json /Users/boriss/Development/Claude/Keshet/*.md /Users/boriss/Development/Claude/Keshet/apps /Users/boriss/Development/Claude/Keshet/libs)"
+    ]
+  }
+}
