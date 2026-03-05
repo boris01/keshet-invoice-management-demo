@@ -4,7 +4,25 @@
       "Bash(ls -la /Users/boriss/Development/Claude/Keshet/*.json /Users/boriss/Development/Claude/Keshet/*.md /Users/boriss/Development/Claude/Keshet/apps /Users/boriss/Development/Claude/Keshet/libs)",
       "Bash(git init)",
       "Bash(git add -A)",
-      "Bash(git commit -m \"Initial commit: docs, CLAUDE.md, and skill files\")"
+      "Bash(git commit -m \"Initial commit: docs, CLAUDE.md, and skill files\")",
+      "Bash(git checkout -b feature/initial-build)",
+      "WebSearch",
+      "WebFetch(domain:nx.dev)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npm init -y)",
+      "Bash(npm install --save-dev nx@latest @nx/angular@latest @nx/nest@latest @nx/js@latest @nx/workspace@latest typescript@latest)",
+      "Bash(npx nx g @nx/angular:app apps/client --style=css --bundler=esbuild --e2eTestRunner=none --linter=eslint --zoneless --no-interactive)",
+      "Bash(npx nx init --no-interactive)",
+      "Bash(npx nx g @nx/nest:app apps/server --e2eTestRunner=none --linter=eslint --no-interactive)",
+      "Bash(npx nx g @nx/js:lib libs/shared --bundler=tsc --importPath=@keshet/shared --linter=eslint --unitTestRunner=none --no-interactive)",
+      "Bash(npx nx build client)",
+      "Bash(npx nx build server)",
+      "Bash(npx nx build shared)",
+      "Bash(ls /Users/boriss/Development/Claude/Keshet/node_modules/helmet/*.d.*)",
+      "Bash(npx nx build client --skip-nx-cache)",
+      "Bash(git commit -m \"Phase 0-2: Nx workspace, shared types, backend core, frontend shell\")"
     ]
   }
 }
