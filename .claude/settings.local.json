@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la /Users/boriss/Development/Claude/Keshet/*.json /Users/boriss/Development/Claude/Keshet/*.md /Users/boriss/Development/Claude/Keshet/apps /Users/boriss/Development/Claude/Keshet/libs)"
+      "Bash(ls -la /Users/boriss/Development/Claude/Keshet/*.json /Users/boriss/Development/Claude/Keshet/*.md /Users/boriss/Development/Claude/Keshet/apps /Users/boriss/Development/Claude/Keshet/libs)",
+      "Bash(git init)",
+      "Bash(git add -A)",
+      "Bash(git commit -m \"Initial commit: docs, CLAUDE.md, and skill files\")"
     ]
   }
 }
