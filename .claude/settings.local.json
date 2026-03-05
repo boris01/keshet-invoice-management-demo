@@ -46,7 +46,10 @@
       "Bash(npx nx test server)",
       "Bash(npx nx test server --watch=false)",
       "Bash(git commit -m \"Phase 6: Backend tests \\(30 pass\\) + Frontend tests \\(28 pass\\)\")",
-      "Bash(git commit -m \"Phase 7: Docker multi-stage builds, nginx config, docker-compose with Redis\")"
+      "Bash(git commit -m \"Phase 7: Docker multi-stage builds, nginx config, docker-compose with Redis\")",
+      "Bash(npx nx build server --verbose)",
+      "Bash(xargs kill -9 rm -rf storage/ git add -A)",
+      "Bash(git commit -m \"Fix: exclude spec files from server build tsconfig\")"
     ]
   }
 }
