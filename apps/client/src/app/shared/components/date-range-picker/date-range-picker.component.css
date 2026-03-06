@@ -188,3 +188,15 @@
   visibility: hidden;
   pointer-events: none;
 }
+
+@media (max-width: 480px) {
+  .dropdown {
+    position: fixed;
+    inset: auto 0 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    min-width: unset;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
+  }
+}
