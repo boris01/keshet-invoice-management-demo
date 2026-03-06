@@ -1,16 +1,16 @@
 .controls-bar {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-lg);
-  background: #dce5f4;
+  background: linear-gradient(to bottom, #4285f4 35%, #dce5f4 35%);
   gap: var(--space-md);
   flex-wrap: wrap;
 }
 
 .controls-end {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-md);
 }
 
@@ -40,12 +40,6 @@
 .icon-btn.active {
   color: var(--color-pending);
   background: #e8f0fe;
-}
-
-.filter-search-group {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
 }
 
 .filter-btn {
@@ -86,21 +80,55 @@
 
 .status-boxes {
   display: flex;
+  align-items: center;
   gap: var(--space-sm);
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.6);
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  align-self: stretch;
 }
 
-@media (max-width: 768px) {
+.filter-search-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: #fff;
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  align-self: stretch;
+}
+
+/* tablet + mobile: switch to stacked rows */
+@media (max-width: 1100px) {
   .controls-bar {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+/* mobile-only tweaks */
+@media (max-width: 768px) {
+  .controls-bar {
     padding: var(--space-sm) var(--space-md);
   }
 
   .controls-end {
     flex-wrap: wrap;
+  }
+
+  .filter-search-group {
+    flex: 1 0 100%;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-input {
+    width: 100%;
   }
 
   .status-boxes {
@@ -113,9 +141,5 @@
 
   .status-boxes::-webkit-scrollbar {
     display: none;
-  }
-
-  .search-input {
-    width: 140px;
   }
 }

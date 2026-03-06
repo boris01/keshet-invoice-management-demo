@@ -83,12 +83,6 @@ import { FileService } from '../../core/services/file.service';
       color: var(--color-text-secondary);
     }
 
-    @media (max-width: 1024px) {
-      .table-container.with-panel {
-        flex: 0.5;
-      }
-    }
-
     @media (max-width: 768px) {
       .content-area {
         flex-direction: column-reverse;

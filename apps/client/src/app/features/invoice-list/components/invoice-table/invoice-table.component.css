@@ -129,6 +129,22 @@ td {
   height: 1px;
 }
 
+/* hide supplier when PDF panel is open on tablet — table is only ~60% wide */
+@media (max-width: 1100px) {
+  :host-context(.with-panel) th.col-supplier,
+  :host-context(.with-panel) td.col-supplier {
+    display: none;
+  }
+
+  :host-context(.with-panel) .col-desc {
+    width: 65%;
+  }
+
+  :host-context(.with-panel) .col-cost {
+    width: 35%;
+  }
+}
+
 @media (max-width: 768px) {
   th,
   td {
@@ -136,7 +152,8 @@ td {
     font-size: 0.8125rem;
   }
 
-  .col-supplier {
+  th.col-supplier,
+  td.col-supplier {
     display: none;
   }
 
@@ -146,11 +163,6 @@ td {
 
   .col-cost {
     width: 35%;
-  }
-
-  th.col-supplier,
-  td.col-supplier {
-    display: none;
   }
 }
 
