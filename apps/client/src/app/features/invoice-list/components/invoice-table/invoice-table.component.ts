@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   input,
   output,
-  signal,
   effect,
   viewChild,
   ElementRef,
@@ -89,7 +88,7 @@ import { I18nService } from '../../../../core/services/i18n.service';
 export class InvoiceTableComponent {
   readonly invoices = input.required<IInvoice[]>();
   readonly selectedInvoice = input<IInvoice | null>(null);
-  readonly select = output<IInvoice>();
+  readonly invoiceSelect = output<IInvoice>();
   readonly navigateToDetail = output<IInvoice>();
   readonly loadMore = output<void>();
 
@@ -132,7 +131,7 @@ export class InvoiceTableComponent {
     }
     this.clickTimer = setTimeout(() => {
       this.clickTimer = null;
-      this.select.emit(invoice);
+      this.invoiceSelect.emit(invoice);
     }, 350);
   }
 

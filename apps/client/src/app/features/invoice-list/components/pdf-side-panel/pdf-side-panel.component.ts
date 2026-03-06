@@ -14,7 +14,7 @@ import { PdfViewerComponent } from '../../../../shared/components/pdf-viewer/pdf
     <div class="panel-card">
       <app-pdf-viewer
         [fileUrl]="fileUrl()"
-        (closeClicked)="close.emit()"
+        (closeClicked)="panelClose.emit()"
         (expandClicked)="expand.emit()"
       />
     </div>
@@ -23,6 +23,6 @@ import { PdfViewerComponent } from '../../../../shared/components/pdf-viewer/pdf
 })
 export class PdfSidePanelComponent {
   readonly fileUrl = input('');
-  readonly close = output<void>();
+  readonly panelClose = output<void>();
   readonly expand = output<void>();
 }

@@ -36,7 +36,7 @@ import { FileService } from '../../core/services/file.service';
           [class.hidden]="invoiceService.loading() || invoiceService.invoices().length === 0"
           [invoices]="invoiceService.invoices()"
           [selectedInvoice]="selectedInvoice()"
-          (select)="onSelectInvoice($event)"
+          (invoiceSelect)="onSelectInvoice($event)"
           (navigateToDetail)="onNavigateToDetail($event)"
           (loadMore)="invoiceService.loadMore()"
         />
@@ -45,7 +45,7 @@ import { FileService } from '../../core/services/file.service';
       <app-pdf-side-panel
         [class.hidden]="!selectedInvoice()"
         [fileUrl]="selectedFileUrl()"
-        (close)="selectedInvoice.set(null)"
+        (panelClose)="selectedInvoice.set(null)"
         (expand)="onNavigateToDetail(selectedInvoice()!)"
       />
     </main>
