@@ -13,3 +13,4 @@ storage/
 dist/
 tmp/
 .DS_Store
+.playwright-mcp/*
