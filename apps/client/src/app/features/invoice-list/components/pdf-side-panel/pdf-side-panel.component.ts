@@ -15,6 +15,7 @@ import { PdfViewerComponent } from '../../../../shared/components/pdf-viewer/pdf
       <app-pdf-viewer
         [fileUrl]="fileUrl()"
         (closeClicked)="close.emit()"
+        (expandClicked)="expand.emit()"
       />
     </div>
   `,
@@ -23,4 +24,5 @@ import { PdfViewerComponent } from '../../../../shared/components/pdf-viewer/pdf
 export class PdfSidePanelComponent {
   readonly fileUrl = input('');
   readonly close = output<void>();
+  readonly expand = output<void>();
 }

@@ -46,6 +46,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-pending);
+  outline-offset: 2px;
+}
+
 .hidden {
   display: none !important;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-text-secondary: #3c4043;
+    --color-border: #9e9e9e;
+  }
 }

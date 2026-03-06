@@ -12,6 +12,7 @@ import {
     <button
       class="count-box"
       [class.active]="active()"
+      [attr.aria-pressed]="active()"
       (click)="clicked.emit()"
     >
       <span class="count">{{ count() }}</span>

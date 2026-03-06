@@ -32,10 +32,10 @@ import { AmountBreakdownCardComponent } from './components/amount-breakdown-card
   ],
   template: `
     <app-header />
-    <div class="detail-nav-bar">
+    <nav class="detail-nav-bar" aria-label="Invoice navigation">
       <div class="nav-start">
         <button class="back-btn" (click)="goBack()" [attr.aria-label]="i18n.t('detail.back')">
-          <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="back-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </button>
@@ -51,27 +51,29 @@ import { AmountBreakdownCardComponent } from './components/amount-breakdown-card
           </div>
         }
       </div>
-    </div>
+    </nav>
 
-    @if (loading()) {
-      <div class="loading-state">
-        <span>{{ i18n.t('loading') }}</span>
-      </div>
-    } @else if (error()) {
-      <div class="error-state">
-        <span>{{ i18n.t('error.generic') }}: {{ error() }}</span>
-      </div>
-    } @else if (invoice()) {
-      <div class="detail-content">
-        <div class="pdf-panel">
-          <app-pdf-viewer [fileUrl]="fileUrl()" />
+    <main id="main-content">
+      @if (loading()) {
+        <div class="loading-state" role="status" aria-live="polite">
+          <span>{{ i18n.t('loading') }}</span>
         </div>
+      } @else if (error()) {
+        <div class="error-state" role="alert">
+          <span>{{ i18n.t('error.generic') }}: {{ error() }}</span>
+        </div>
+      } @else if (invoice()) {
+        <div class="detail-content">
         <div class="cards-panel">
           <app-invoice-info-card [invoice]="invoice()!" />
           <app-amount-breakdown-card [invoice]="invoice()!" />
         </div>
+        <div class="pdf-panel">
+          <app-pdf-viewer [fileUrl]="fileUrl()" [showToolbar]="false" />
+        </div>
       </div>
     }
+    </main>
   `,
   styleUrl: './invoice-detail.component.css',
 })

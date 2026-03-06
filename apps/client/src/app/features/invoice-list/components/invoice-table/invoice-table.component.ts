@@ -23,9 +23,9 @@ import { I18nService } from '../../../../core/services/i18n.service';
       <table class="invoice-table">
         <thead>
           <tr>
-            <th class="col-desc">{{ i18n.t('table.description') }}</th>
-            <th class="col-supplier">{{ i18n.t('table.supplier') }}</th>
-            <th class="col-cost">{{ i18n.t('table.cost') }}</th>
+            <th scope="col" class="col-desc">{{ i18n.t('table.description') }}</th>
+            <th scope="col" class="col-supplier">{{ i18n.t('table.supplier') }}</th>
+            <th scope="col" class="col-cost">{{ i18n.t('table.cost') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -34,34 +34,39 @@ import { I18nService } from '../../../../core/services/i18n.service';
               class="invoice-row"
               [class.selected]="selectedInvoice()?.id === invoice.id"
               [class.alt]="i % 2 === 1"
+              [attr.aria-selected]="selectedInvoice()?.id === invoice.id"
+              [attr.aria-label]="invoice.description + ' — ' + invoice.supplier"
+              tabindex="0"
               (click)="onRowClick(invoice)"
+              (keydown.enter)="onRowClick(invoice)"
+              (keydown.space)="onRowClick(invoice); $event.preventDefault()"
             >
               <td class="col-desc">
                 <div class="desc-cell">
                   @switch (invoice.status) {
                     @case ('APPROVED') {
-                      <span class="status-icon approved">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="white">
+                      <span class="status-icon approved" role="img" aria-label="Approved">
+                        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                           <path d="M2.5 6l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" fill="none"/>
                         </svg>
                       </span>
                     }
                     @case ('REJECTED') {
-                      <span class="status-icon rejected">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="white">
+                      <span class="status-icon rejected" role="img" aria-label="Rejected">
+                        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                           <path d="M3 3l6 6M9 3l-6 6" stroke="white" stroke-width="1.5"/>
                         </svg>
                       </span>
                     }
                     @case ('IN_PROCESS') {
-                      <span class="status-icon in-process">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="white">
+                      <span class="status-icon in-process" role="img" aria-label="In process">
+                        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                           <path d="M2.5 6l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" fill="none"/>
                         </svg>
                       </span>
                     }
                     @case ('PENDING_APPROVAL') {
-                      <span class="status-icon pending"></span>
+                      <span class="status-icon pending" role="img" aria-label="Pending approval"></span>
                     }
                   }
                   <div class="desc-text">

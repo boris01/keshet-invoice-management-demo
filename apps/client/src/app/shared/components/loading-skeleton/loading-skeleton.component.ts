@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   selector: 'app-loading-skeleton',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="skeleton-table">
+    <div class="skeleton-table" role="status" aria-label="Loading invoices">
       @for (row of rows; track row) {
         <div class="skeleton-row">
           <div class="skeleton-cell skeleton-circle"></div>

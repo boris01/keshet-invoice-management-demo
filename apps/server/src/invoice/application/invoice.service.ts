@@ -19,7 +19,7 @@ export class InvoiceService {
   async findPaginated(
     query: PaginationQueryDto,
   ): Promise<IPaginatedResponse<InvoiceEntity>> {
-    const cacheKey = `invoices:page:${query.page}:size:${query.pageSize}:status:${query.status ?? ''}:search:${query.search ?? ''}`;
+    const cacheKey = `invoices:page:${query.page}:size:${query.pageSize}:status:${query.status ?? ''}:search:${query.search ?? ''}:from:${query.dateFrom ?? ''}:to:${query.dateTo ?? ''}`;
 
     const cached = await this.cache.get<IPaginatedResponse<InvoiceEntity>>(cacheKey);
     if (cached) {

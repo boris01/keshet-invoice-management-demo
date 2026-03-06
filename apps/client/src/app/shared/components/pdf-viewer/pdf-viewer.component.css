@@ -39,14 +39,12 @@
 .pdf-canvas-wrapper {
   flex: 1;
   overflow: auto;
-  display: flex;
-  justify-content: center;
   padding: var(--space-sm);
 }
 
 .pdf-canvas-wrapper canvas {
-  max-width: 100%;
-  height: auto;
+  display: block;
+  margin-inline: auto;
 }
 
 .pdf-pagination {
@@ -64,10 +62,17 @@
   border: none;
   background: var(--color-border);
   cursor: pointer;
-  padding: 0;
+  padding: 17px;
+  background-clip: content-box;
   transition: background 0.2s;
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--color-pending);
+  outline-offset: 2px;
 }
 
 .dot.active {
   background: var(--color-text);
+  background-clip: content-box;
 }

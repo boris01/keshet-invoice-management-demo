@@ -11,8 +11,8 @@ interface StatusConfig {
   selector: 'app-status-pill',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span class="pill" [style.background]="config().color" [attr.title]="config().label">
-      <span class="pill-icon">{{ config().icon }}</span>
+    <span class="pill" [style.background]="config().color" [attr.aria-label]="config().label" role="img">
+      <span class="pill-icon" aria-hidden="true">{{ config().icon }}</span>
     </span>
   `,
   styleUrl: './status-pill.component.css',

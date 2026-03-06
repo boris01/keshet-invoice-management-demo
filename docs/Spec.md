@@ -255,6 +255,64 @@ Use `@nestjs/cache-manager` with `cache-manager-redis-store` for server-side cac
 
 ---
 
+## Accessibility (ADA / WCAG 2.1 AA)
+
+The application must comply with **WCAG 2.1 Level AA** and the **Americans with Disabilities Act (ADA)** standards. All interactive elements must be usable via keyboard, screen reader, and assistive technology.
+
+### Landmark Structure
+
+- **Skip navigation link**: Visible on focus, links to `#main-content`
+- **`<header role="banner">`**: App header with logo and language toggle
+- **`<nav aria-label="...">`**: Controls bar (filters, search) and detail navigation bar
+- **`<main id="main-content">`**: Primary content area on every page
+
+### Keyboard Navigation
+
+- All interactive elements must be focusable and operable via keyboard (Tab, Enter, Space, Escape)
+- Table rows are focusable (`tabindex="0"`) and activatable with Enter/Space
+- Date picker closes on Escape, calendar days are keyboard-navigable
+- Focus must never be trapped — Escape always closes overlays/dropdowns
+- Visible `:focus-visible` outline on all focusable elements (global `2px solid` blue outline)
+
+### ARIA Attributes
+
+| Element | Required ARIA |
+|---------|---------------|
+| Interactive buttons (icon-only) | `aria-label` describing the action |
+| Decorative SVGs/icons | `aria-hidden="true"` |
+| Status icons (✓, ✗, ○) | `role="img"` + `aria-label` with status text |
+| Toggle buttons (view mode, status filter) | `aria-pressed` reflecting current state |
+| Table rows (selectable) | `aria-selected`, `aria-label` with invoice description |
+| Table headers | `scope="col"` on `<th>` elements |
+| PDF canvas | `role="img"` + `aria-label` with page info |
+| Pagination dots | `aria-label="Page N of M"`, `aria-current="page"` on active |
+| Date picker trigger | `aria-expanded`, `aria-haspopup="dialog"` |
+| Date picker dropdown | `role="dialog"`, grid with `aria-label` on each day cell |
+| Loading states | `role="status"` + `aria-live="polite"` |
+| Error states | `role="alert"` for immediate screen reader announcement |
+| Empty states | `role="status"` |
+| Toast notifications | Container: `role="status"` + `aria-live="polite"`; error toasts: `role="alert"` |
+| Language toggle | `aria-label` describing the action in the target language |
+
+### Color & Contrast
+
+- All text must meet **4.5:1** contrast ratio against its background (WCAG 1.4.3)
+- Support `prefers-contrast: more` media query with darker secondary text and borders
+- Status information must not rely on color alone — always paired with icons or text labels
+
+### Touch Targets
+
+- All interactive elements must have a minimum **44×44px** touch target (WCAG 2.5.5)
+- Pagination dots use padding to meet touch target requirements while remaining visually small
+
+### Screen Reader Announcements
+
+- Loading skeleton: `role="status"` + `aria-label="Loading invoices"`
+- Dynamic content changes (month navigation in calendar): `aria-live="polite"`
+- Toast dismiss buttons: `aria-label="Dismiss notification"`
+
+---
+
 ## Mobile Responsiveness
 
 - **≤ 1024px**: PDF panel takes 50% width
@@ -428,3 +486,9 @@ After building, verify:
 - [ ] `npx nx test client --coverage` — ≥ 80% line coverage
 - [ ] E2E tests pass with Supertest
 - [ ] Frontend E2E tests pass using Playwright for all main functions and UI flows
+- [ ] Skip-nav link visible on focus and navigates to main content
+- [ ] All pages navigable via keyboard only (Tab, Enter, Space, Escape)
+- [ ] Screen reader announces loading states, errors, and toast notifications
+- [ ] All interactive elements have visible `:focus-visible` outlines
+- [ ] All icon-only buttons have `aria-label` attributes
+- [ ] Table rows have `aria-selected` and are keyboard-activatable

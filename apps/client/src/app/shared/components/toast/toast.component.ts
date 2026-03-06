@@ -5,11 +5,11 @@ import { ToastService } from '../../../core/services/toast.service';
   selector: 'app-toast',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="toast-container">
+    <div class="toast-container" role="status" aria-live="polite" aria-atomic="true">
       @for (toast of toastService.toasts(); track toast.id) {
-        <div class="toast" [class]="'toast-' + toast.type">
+        <div class="toast" [class]="'toast-' + toast.type" [attr.role]="toast.type === 'error' ? 'alert' : null">
           <span class="toast-message">{{ toast.message }}</span>
-          <button class="toast-close" (click)="toastService.remove(toast.id)">&times;</button>
+          <button class="toast-close" (click)="toastService.remove(toast.id)" aria-label="Dismiss notification">&times;</button>
         </div>
       }
     </div>

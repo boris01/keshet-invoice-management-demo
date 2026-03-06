@@ -15,13 +15,33 @@
 }
 
 .brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
 }
 
-.brand-letter {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ea4335,
+    #fbbc05,
+    #34a853,
+    #4285f4,
+    #a259ff,
+    #ea4335
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .header-end {

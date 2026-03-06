@@ -27,10 +27,10 @@ import { FileService } from '../../core/services/file.service';
   template: `
     <app-header />
     <app-controls-bar />
-    <div class="content-area">
+    <main id="main-content" class="content-area">
       <div class="table-container" [class.with-panel]="selectedInvoice()">
         @if (!invoiceService.loading() && invoiceService.invoices().length === 0) {
-          <div class="empty-state">לא נמצאו חשבוניות</div>
+          <div class="empty-state" role="status">לא נמצאו חשבוניות</div>
         }
         <app-invoice-table
           [class.hidden]="invoiceService.loading() || invoiceService.invoices().length === 0"
@@ -46,8 +46,9 @@ import { FileService } from '../../core/services/file.service';
         [class.hidden]="!selectedInvoice()"
         [fileUrl]="selectedFileUrl()"
         (close)="selectedInvoice.set(null)"
+        (expand)="onNavigateToDetail(selectedInvoice()!)"
       />
-    </div>
+    </main>
   `,
   styles: `
     :host {
@@ -70,7 +71,7 @@ import { FileService } from '../../core/services/file.service';
     }
 
     .table-container.with-panel {
-      flex: 0.6;
+      flex: 1;
     }
 
     .empty-state {

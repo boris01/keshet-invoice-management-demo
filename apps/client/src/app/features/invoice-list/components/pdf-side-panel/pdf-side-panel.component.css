@@ -2,7 +2,6 @@
   display: block;
   width: 40%;
   min-width: 320px;
-  max-width: 500px;
   height: 100%;
   border-inline-start: 1px solid var(--color-border);
 }
@@ -17,7 +16,6 @@
 @media (max-width: 1024px) {
   :host {
     width: 50%;
-    max-width: 50%;
   }
 }
 
