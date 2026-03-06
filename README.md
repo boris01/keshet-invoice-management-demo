@@ -48,7 +48,7 @@ A full-stack invoice management application built with Angular 21+ and NestJS 11
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/boris01/keshet-invoice-management-demo
 cd keshet
 
 # Install dependencies
